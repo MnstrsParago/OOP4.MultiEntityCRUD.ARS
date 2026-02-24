@@ -1,74 +1,47 @@
-# Airline Reservation System
+# ✈️ Airline Reservation System (ARS) - Multi-Entity CRUD REST API
 
-**Subject:** Object-Oriented Programming  
-**Student:** Ayazbek Abdanur
+**Subject:** Object-Oriented Programming (OOP) / REST API / CRUD / JDBC  
+**Name:** Abdanur
 
-## 📌 Overview
+## 📌 Project Description
+This repository is a Java **REST API** for an Airline Reservation System (ARS).  
+It connects to a **PostgreSQL** database and provides full **CRUD** operations for multiple entities:
 
-This is updated Milestone 2 of the OOP Endterm assignment — a Java-based RESTful API that connects to a PostgreSQL database and enables full CRUD operations for **Passengers**, **Flights**, and **Reservations**.
+- `Passenger`
+- `Flight`
+- `Reservation`
 
-The goal was to design a lightweight HTTP server without external frameworks, demonstrating real-world usage of:
-- Java core networking (`com.sun.net.httpserver`)
-- JDBC for SQL operations
-- JSON parsing with `org.json`
+This project continues the previous work from:
+https://github.com/MnstrsParago/OOP3.PassengerCRUD.ARS
 
-## 🛠 Tech Stack
+I used **Postman** to test all CRUD endpoints.
 
-| Layer           | Tech                              |
-|----------------|-----------------------------------|
-| Language        | Java                              |
-| HTTP Server     | `com.sun.net.httpserver.HttpServer` |
-| Database        | PostgreSQL (`airressys`)          |
-| JSON            | `org.json:json-20231013.jar`      |
-| Driver          | `org.postgresql:postgresql-42.7.5.jar` |
+## 💡 Features
+- REST API built with Java built-in `HttpServer` (no heavy frameworks)
+- CRUD endpoints for **Passengers**, **Flights**, and **Reservations**
+- JSON request and response bodies
+- PostgreSQL database integration using **JDBC**
+- Prepared statements for safer SQL queries
+- Easy API testing with **Postman**
 
-## 📂 Project Structure
+## 📦 Technologies
+- **Java**
+- **PostgreSQL**
+- **JDBC**
+- **com.sun.net.httpserver.HttpServer**
+- **org.json** (JSON parsing)
+- **Postman** (API testing)
+- Git + GitHub
 
+## 🚀 How to Run
+1) Clone the repository:
+```bash
+git clone https://github.com/MnstrsParago/OOP4.MultiEntityCRUD.ARS.git
+cd OOP4.MultiEntityCRUD.ARS
 ```
-OOP.ENDTERM.Project_Defence/
-│
-├── Main.java
-├── PassengerAPI.java       # Main HTTP server
-├── lib/
-│   ├── json-20231013.jar
-│   └── postgresql-42.7.5.jar
-└── README.md
 
-````
+2) Create a PostgreSQL database (example name used in the project: `airressys`), then create tables:
 
-## 🧠 Entities & Endpoints
-
-Each entity has its own endpoint and supports full CRUD:
-
-### 🔹 `/passenger`
-| Method | Description                    | Payload (JSON)                                      |
-|--------|--------------------------------|-----------------------------------------------------|
-| GET    | Get all passengers             | -                                                   |
-| POST   | Add new passenger              | `name`, `passport_number`, `nationality`, `date_of_birth` |
-| PUT    | Update passenger's name        | `id`, `name`                                        |
-| DELETE | Delete passenger by ID         | `id` (as query param)                               |
-
-### 🔹 `/flight`
-| Method | Description                    | Payload (JSON)                                      |
-|--------|--------------------------------|-----------------------------------------------------|
-| GET    | Get all flights                | -                                                   |
-| POST   | Add new flight                 | `flight_number`, `origin`, `destination`, `departure_time` |
-| PUT    | Update flight info             | `id`, `flight_number`, `origin`, `destination`, `departure_time` |
-| DELETE | Delete flight by ID            | `id` (as query param)                               |
-
-### 🔹 `/reservation`
-| Method | Description                    | Payload (JSON)                                      |
-|--------|--------------------------------|-----------------------------------------------------|
-| GET    | Get all reservations           | -                                                   |
-| POST   | Add new reservation            | `passenger_id`, `flight_id`, `seat_number`          |
-| PUT    | Update reservation             | `id`, `passenger_id`, `flight_id`, `seat_number`    |
-| DELETE | Delete reservation by ID       | `id` (as query param)                               |
-
-## 🧾 Database Schema
-
-> **Database:** `airressys`
-
-### Passenger Table
 ```sql
 CREATE TABLE Passenger (
   id SERIAL PRIMARY KEY,
@@ -77,11 +50,7 @@ CREATE TABLE Passenger (
   nationality TEXT,
   date_of_birth DATE
 );
-````
 
-### Flight Table
-
-```sql
 CREATE TABLE Flight (
   id SERIAL PRIMARY KEY,
   flight_number TEXT,
@@ -89,11 +58,7 @@ CREATE TABLE Flight (
   destination TEXT,
   departure_time TEXT
 );
-```
 
-### Reservation Table
-
-```sql
 CREATE TABLE Reservation (
   id SERIAL PRIMARY KEY,
   passenger_id INT REFERENCES Passenger(id),
@@ -102,42 +67,23 @@ CREATE TABLE Reservation (
 );
 ```
 
-## ▶️ How to Run
+3) Add required `.jar` libraries to `lib/` (if the project uses local libs):
+- PostgreSQL JDBC driver
+- JSON library
 
-1. Make sure PostgreSQL is running, and you've created the `airressys` database with the 3 tables above.
-2. Place required `.jar` libraries in the `/lib` directory.
-3. Compile and run:
+4) Update database connection settings in the code (URL / user / password).
 
+5) Compile and run (example):
 ```bash
 javac -cp "lib/*" PassengerAPI.java
 java -cp ".:lib/*" PassengerAPI
 ```
 
-4. Server will run at `http://localhost:8080`
-
-## 🧪 Example Requests
-
-### Add Passenger
-
-```bash
-curl -X POST http://localhost:8080/passenger \
--H "Content-Type: application/json" \
--d '{"name":"Tom Hardy", "passport_number":"B9901234", "nationality":"British", "date_of_birth":"1980-09-15"}'
+Server example:
+```
+http://localhost:8080
 ```
 
-### Get All Flights
-
-```bash
-curl http://localhost:8080/flight
-```
-
-## 🎓 Final Notes
-
-This milestone delivers a fully functional REST server that can handle real-world CRUD interactions between passengers, flights, and reservations.
-It showcases manual HTTP handling, SQL integrity, and clean object-structured logic using only Java standard libraries.
-
-## 🧑‍💻 Author
-
-GitHub: [MnstrsParago](https://github.com/MnstrsParago)
-Telegram: [@ser_bauyr](https://t.me/ser_bauyr)
-Instagram: [@bdnr05](https://www.instagram.com/bdnr05/)
+## 📘 Reflection
+This project helped me practice building a bigger REST API with more than one entity.  
+I learned how to organize endpoints, keep database logic clear, and test the full CRUD flow using Postman with Bigget Dataset.
